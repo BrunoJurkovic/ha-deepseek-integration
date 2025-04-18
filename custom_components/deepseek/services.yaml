@@ -1,6 +1,7 @@
 generate_text:
   name: Generate Text
   description: Generate text using DeepSeek AI.
+  target: {}
   fields:
     prompt:
       name: Prompt
@@ -10,3 +11,7 @@ generate_text:
       selector:
         text:
           multiline: true
+  response_variable:
+    description: The response from DeepSeek
+    example: >
+      response_variable: deepseek_response

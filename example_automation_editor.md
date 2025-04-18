@@ -19,11 +19,11 @@ Here's a step-by-step guide for creating an automation that uses DeepSeek in Hom
 1. Click **Add Action**
 2. Select **Call service**
 3. In the service field, search for and select `deepseek.generate_text`
-4. In the service data section, add:
+4. In the service data section, add your prompt:
    ```yaml
    prompt: "Please suggest a recipe using these ingredients: eggs, spinach, and cheese. Include easy instructions."
    ```
-5. Under **Response Variable** enter `deepseek_response`
+5. In the **Response Variable** field (this appears automatically when you select the deepseek.generate_text service), enter a name like `deepseek_response`
    - This is critical as it stores the AI's response for use in subsequent steps
 
 ### Step 4: Use the Response
@@ -67,6 +67,6 @@ In the visual editor, your automation would look like this:
 
 ## Important Notes
 
-1. The `response_variable` field is crucial - it saves the response for use in later actions
+1. The `Response Variable` field will automatically appear when using this service
 2. When using the stored response, use `{{ variable_name.response }}` to access the content
 3. You can use this pattern in any automation scenario where you want AI-generated content
