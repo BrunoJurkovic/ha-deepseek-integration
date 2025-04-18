@@ -1,0 +1,41 @@
+alias: "DeepSeek AI Morning Briefing"
+description: "Get a daily briefing from DeepSeek AI at 8 AM"
+trigger:
+  - platform: time
+    at: "08:00:00"
+condition: []
+action:
+  # Step 1: Get the weather forecast
+  - service: weather.get_forecast
+    target:
+      entity_id: weather.home
+    response_variable: weather_forecast
+    data:
+      type: daily
+  
+  # Step 2: Call DeepSeek with context and store response in a variable
+  - service: deepseek.generate_text
+    response_variable: ai_summary
+    data:
+      prompt: >-
+        Current weather: {{ states('weather.home') }}, temperature: {{ state_attr('weather.home', 'temperature') }}°C. 
+        Forecast: {{ weather_forecast }}.
+        Create a brief, friendly morning summary including weather info and a motivational quote.
+  
+  # Step 3: Send notification with the AI-generated content
+  - service: notify.mobile_app_phone
+    data:
+      title: "Good Morning! AI Briefing"
+      message: "{{ ai_summary.response }}"
+      
+  # Alternative Step 3: Announce on a media player
+  - service: media_player.volume_set
+    target:
+      entity_id: media_player.living_room_speaker
+    data:
+      volume_level: 0.5
+  - service: tts.speak
+    target:
+      entity_id: media_player.living_room_speaker
+    data:
+      message: "{{ ai_summary.response }}"
