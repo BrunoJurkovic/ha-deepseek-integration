@@ -50,22 +50,30 @@ data:
   prompt: "Write a short poem about smart homes."
 ```
 
-Example in an automation:
+### Using in Automations
+
+The service returns the AI's response, which you can capture and use in subsequent actions.
+
+Example in an automation YAML:
 
 ```yaml
-automation:
-  - alias: "Generate Smart Home Poem at 8 AM"
-    trigger:
-      platform: time
-      at: "08:00:00"
-    action:
-      - service: deepseek.generate_text
-        data:
-          prompt: "Write a short poem about my smart home."
-      - service: notify.mobile_app
-        data:
-          message: "{{ states('deepseek.generate_text') }}"
+action:
+  - service: deepseek.generate_text
+    response_variable: ai_response
+    data:
+      prompt: "Write a short poem about my smart home."
+  - service: notify.mobile_app
+    data:
+      title: "DeepSeek Poem"
+      message: "{{ ai_response.response }}"
 ```
+
+For detailed examples including:
+- Visual Editor setup instructions
+- More complex automations
+- Different use cases
+
+See the `example_automation.yaml` and `example_automation_editor.md` files in this repository.
 
 ## License
 
