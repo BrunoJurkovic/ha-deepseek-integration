@@ -2,11 +2,10 @@
 from __future__ import annotations
 
 import logging
-import aiohttp
-import async_timeout
 from typing import Any
 
 import voluptuous as vol
+from openai import OpenAI, AsyncOpenAI
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant, ServiceCall
@@ -17,6 +16,8 @@ from .const import (
     DOMAIN, 
     CONF_API_KEY, 
     CONF_MODEL,
+    CONF_BASE_URL,
+    DEFAULT_BASE_URL,
     SERVICE_GENERATE_TEXT,
     ATTR_PROMPT,
     ATTR_RESPONSE
@@ -41,6 +42,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     hass.data[DOMAIN][entry.entry_id] = {
         CONF_API_KEY: entry.data[CONF_API_KEY],
         CONF_MODEL: entry.data.get(CONF_MODEL),
+        CONF_BASE_URL: entry.data.get(CONF_BASE_URL, DEFAULT_BASE_URL),
     }
 
     # Register the generate_text service
@@ -49,10 +51,15 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         prompt = call.data.get(ATTR_PROMPT)
         api_key = entry.data[CONF_API_KEY]
         model = entry.data.get(CONF_MODEL)
+        base_url = entry.data.get(CONF_BASE_URL, DEFAULT_BASE_URL)
         
         try:
-            # TODO: Replace with actual DeepSeek API call
-            result = await call_deepseek_api(hass, api_key, model, prompt)
+            result = await call_deepseek_api(
+                api_key=api_key, 
+                model=model, 
+                prompt=prompt, 
+                base_url=base_url
+            )
             _LOGGER.debug("DeepSeek response: %s", result)
             
         except Exception as ex:
@@ -78,16 +85,18 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     return True
 
 async def call_deepseek_api(
-    hass: HomeAssistant, api_key: str, model: str, prompt: str
+    api_key: str, 
+    model: str, 
+    prompt: str, 
+    base_url: str = DEFAULT_BASE_URL
 ) -> str:
-    """Call DeepSeek API and return the response."""
-    # This is a placeholder. Replace with actual DeepSeek API implementation
+    """Call DeepSeek API using OpenAI client and return the response."""
     try:
-        # To be replaced with actual DeepSeek client library
-        import deepseek
-        
-        # Initialize the client with the API key
-        client = deepseek.Client(api_key=api_key)
+        # Initialize the OpenAI client with DeepSeek's base URL
+        client = AsyncOpenAI(
+            api_key=api_key,
+            base_url=base_url
+        )
         
         # Make the API call
         response = await client.chat.completions.create(
@@ -100,9 +109,9 @@ async def call_deepseek_api(
         # Extract the response text
         return response.choices[0].message.content
         
-    except ImportError:
-        _LOGGER.error("DeepSeek library not found. Install it using pip install deepseek-ai")
+    except ImportError as e:
+        _LOGGER.error("OpenAI library not found. Install it using pip install openai>=1.0.0")
         raise
-    except Exception as ex:
-        _LOGGER.error("Error calling DeepSeek API: %s", ex)
+    except Exception as e:
+        _LOGGER.error("Error calling DeepSeek API: %s", e)
         raise

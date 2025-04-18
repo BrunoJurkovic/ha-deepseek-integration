@@ -29,8 +29,14 @@ This custom integration for Home Assistant allows you to interact with DeepSeek 
 ## Configuration
 
 1. You need a DeepSeek API key to use this integration.
-2. During setup, enter your API key and optionally specify the model you want to use.
-3. The default model is `deepseek-chat`.
+2. During setup, you'll need to provide:
+   - **API Key**: Your DeepSeek API key
+   - **Model**: The model you want to use (default is `deepseek-chat`)
+   - **Base URL**: The API endpoint (default is `https://api.deepseek.com/v1`)
+
+## Technical Details
+
+This integration uses the OpenAI Python client to communicate with DeepSeek's API, as DeepSeek provides an OpenAI-compatible API endpoint. We configure the OpenAI client to use DeepSeek's base URL instead of OpenAI's.
 
 ## Usage
 
@@ -42,6 +48,23 @@ Example service call:
 service: deepseek.generate_text
 data:
   prompt: "Write a short poem about smart homes."
+```
+
+Example in an automation:
+
+```yaml
+automation:
+  - alias: "Generate Smart Home Poem at 8 AM"
+    trigger:
+      platform: time
+      at: "08:00:00"
+    action:
+      - service: deepseek.generate_text
+        data:
+          prompt: "Write a short poem about my smart home."
+      - service: notify.mobile_app
+        data:
+          message: "{{ states('deepseek.generate_text') }}"
 ```
 
 ## License

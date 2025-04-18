@@ -6,7 +6,8 @@
         "description": "Set up DeepSeek integration",
         "data": {
           "api_key": "API Key",
-          "model": "Model (default: deepseek-chat)"
+          "model": "Model (default: deepseek-chat)",
+          "base_url": "API Base URL (default: https://api.deepseek.com/v1)"
         }
       }
     },
