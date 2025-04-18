@@ -65,7 +65,7 @@ action:
   - service: notify.mobile_app
     data:
       title: "DeepSeek Poem"
-      message: "{{ ai_response }}"
+      message: "{{ ai_response.response }}"
 ```
 
 For detailed examples including:

@@ -34,9 +34,9 @@ Here's a step-by-step guide for creating an automation that uses DeepSeek in Hom
 4. For notification data, add:
    ```yaml
    title: "Recipe Suggestion"
-   message: "{{ deepseek_response }}"
+   message: "{{ deepseek_response.response }}"
    ```
-   - This accesses the response that was stored in the variable
+   - Note the `.response` - this is accessing the specific response field we return from our service
 
 ### Step 5: Save Your Automation
 1. Click **Save** in the bottom right
@@ -63,11 +63,11 @@ In the visual editor, your automation would look like this:
      - Service Data:
        ```yaml
        title: "Recipe Suggestion"
-       message: "{{ deepseek_response }}"
+       message: "{{ deepseek_response.response }}"
        ```
 
 ## Important Notes
 
 1. The `Store Response As` field will automatically appear when using this service
-2. When using the stored response, use `{{ variable_name }}` to access the content
+2. When using the stored response, use `{{ variable_name.response }}` to access the content
 3. You can use this pattern in any automation scenario where you want AI-generated content
