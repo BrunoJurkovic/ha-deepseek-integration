@@ -3,9 +3,13 @@
   "name": "DeepSeek",
   "documentation": "https://github.com/BrunoJurkovic/ha-deepseek-integration",
   "dependencies": [],
-  "codeowners": ["@BrunoJurkovic"],
-  "requirements": ["openai>=1.0.0"],
+  "codeowners": [
+    "@BrunoJurkovic"
+  ],
+  "requirements": [
+    "openai>=1.0.0"
+  ],
   "config_flow": true,
   "iot_class": "cloud_polling",
-  "version": "0.2.0"
+  "version": "0.3.0"
 }
