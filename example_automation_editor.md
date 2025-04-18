@@ -23,7 +23,8 @@ Here's a step-by-step guide for creating an automation that uses DeepSeek in Hom
    ```yaml
    prompt: "Please suggest a recipe using these ingredients: eggs, spinach, and cheese. Include easy instructions."
    ```
-5. In the **Response Variable** field (this appears automatically when you select the deepseek.generate_text service), enter a name like `deepseek_response`
+5. Below the Service Data section, there will be a section called **Store Response As** (or similar field for capturing the response)
+   - Enter a variable name like `deepseek_response`
    - This is critical as it stores the AI's response for use in subsequent steps
 
 ### Step 4: Use the Response
@@ -33,9 +34,9 @@ Here's a step-by-step guide for creating an automation that uses DeepSeek in Hom
 4. For notification data, add:
    ```yaml
    title: "Recipe Suggestion"
-   message: "{{ deepseek_response.response }}"
+   message: "{{ deepseek_response }}"
    ```
-   - Note the `.response` - this is accessing the specific response field we return from our service
+   - This accesses the response that was stored in the variable
 
 ### Step 5: Save Your Automation
 1. Click **Save** in the bottom right
@@ -55,18 +56,18 @@ In the visual editor, your automation would look like this:
        ```yaml
        prompt: "Please suggest a recipe using these ingredients: eggs, spinach, and cheese. Include easy instructions."
        ```
-     - Response Variable: `deepseek_response`
+     - Store Response As: `deepseek_response`
 
    - **Action 2**: Call service
      - Service: `notify.mobile_app` or similar
      - Service Data:
        ```yaml
        title: "Recipe Suggestion"
-       message: "{{ deepseek_response.response }}"
+       message: "{{ deepseek_response }}"
        ```
 
 ## Important Notes
 
-1. The `Response Variable` field will automatically appear when using this service
-2. When using the stored response, use `{{ variable_name.response }}` to access the content
+1. The `Store Response As` field will automatically appear when using this service
+2. When using the stored response, use `{{ variable_name }}` to access the content
 3. You can use this pattern in any automation scenario where you want AI-generated content

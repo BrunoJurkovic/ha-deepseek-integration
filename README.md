@@ -59,13 +59,13 @@ Example in an automation YAML:
 ```yaml
 action:
   - service: deepseek.generate_text
-    response_variable: ai_response
     data:
       prompt: "Write a short poem about my smart home."
+    response_variable: ai_response
   - service: notify.mobile_app
     data:
       title: "DeepSeek Poem"
-      message: "{{ ai_response.response }}"
+      message: "{{ ai_response }}"
 ```
 
 For detailed examples including:

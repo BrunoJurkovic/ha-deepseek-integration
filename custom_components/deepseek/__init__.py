@@ -46,7 +46,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     }
 
     # Register the generate_text service
-    async def generate_text(call: ServiceCall) -> dict[str, Any]:
+    async def generate_text(call: ServiceCall) -> str:
         """Handle the generate_text service call."""
         prompt = call.data.get(ATTR_PROMPT)
         api_key = entry.data[CONF_API_KEY]
@@ -62,8 +62,8 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
             )
             _LOGGER.debug("DeepSeek response: %s", result)
             
-            # Return the result so it can be captured in automations
-            return {ATTR_RESPONSE: result}
+            # Return the result directly so it can be captured in automations
+            return result
             
         except Exception as ex:
             _LOGGER.error("Error calling DeepSeek API: %s", ex)
@@ -73,7 +73,8 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         DOMAIN, 
         SERVICE_GENERATE_TEXT, 
         generate_text, 
-        schema=GENERATE_TEXT_SCHEMA
+        schema=GENERATE_TEXT_SCHEMA,
+        supports_response=True
     )
 
     return True
