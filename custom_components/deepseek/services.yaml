@@ -1,0 +1,12 @@
+generate_text:
+  name: Generate Text
+  description: Generate text using DeepSeek AI.
+  fields:
+    prompt:
+      name: Prompt
+      description: The prompt to send to DeepSeek.
+      required: true
+      example: "Write a short poem about home automation."
+      selector:
+        text:
+          multiline: true
